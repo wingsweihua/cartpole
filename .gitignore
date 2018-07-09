@@ -1,0 +1,11 @@
+./records/*
+./data/*
+./tensorboard/*
+
+
+test_*
+
+
+.idea/*
+__pychache__
+
