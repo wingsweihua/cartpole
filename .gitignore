@@ -1,11 +1,12 @@
-./records/*
-./data/*
-./tensorboard/*
+records/*
+data/*
+tensorboard/*
 
 
 test_*
 
 
 .idea/*
-__pychache__
+
+__pycache__/*
 
