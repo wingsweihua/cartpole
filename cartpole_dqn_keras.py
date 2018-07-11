@@ -23,8 +23,8 @@ class DQN_Agent:
     REPLAY_MEMORY_SIZE = 10000
     RANDOM_ACTION_PROB = 0.5
     RANDOM_ACTION_DECAY = 0.99
-    HIDDEN1_SIZE = 128
-    HIDDEN2_SIZE = 128
+    HIDDEN1_SIZE = 10
+    HIDDEN2_SIZE = 10
     NUM_EPISODES = 200
     MAX_STEPS = 1000
     LEARNING_RATE = 0.0001
@@ -265,7 +265,7 @@ def log_perf(file_name,reward_str):
 
 if __name__ == '__main__':
 
-    file_name = "./records/reward_dqn_%s.txt"%(time.strftime('%m_%d_%H_%M_%S_', time.localtime(time.time())))
+    file_name = "./records/%s_reward_dqn.txt"%(time.strftime('%m_%d_%H_%M_%S', time.localtime(time.time())))
     player = DQN_Agent()
 
     ############!!!!!!!dqn.env.render()
@@ -275,6 +275,8 @@ if __name__ == '__main__':
     res = []
     for i in range(100):
         steps = player.play()
-        print("Test steps = ", steps)
+        perf_str = "Test steps = {0}\n".format(steps)
+        log_perf(file_name,perf_str)
         res.append(steps)
-    print("Mean steps = ", sum(res) / len(res))
+    perf_str = "Mean steps = {0}\n".format(sum(res) / len(res))
+    log_perf(file_name,perf_str)

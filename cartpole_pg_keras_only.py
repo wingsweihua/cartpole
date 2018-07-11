@@ -146,7 +146,8 @@ class Cartpole_PG_Agent():
 
         episode_data = Episode()
         # Launch the game
-        self.reset()
+        self.state = self.env.reset()
+        self.env.render()
 
         while True:
             # Choose action a, remember WE'RE NOT IN A DETERMINISTIC ENVIRONMENT, WE'RE OUTPUT PROBABILITIES.
@@ -169,6 +170,8 @@ class Cartpole_PG_Agent():
 
         return episode_data
 
+
+
 def log_perf(file_name,reward_str):
     fp = open(file_name, "a")
     fp.write(reward_str)
@@ -178,11 +181,11 @@ if __name__ == '__main__':
     allRewards = []
     episode = 0
     max_episodes = 200
-    file_name = "./records/reward_%s.txt"%(time.strftime('%m_%d_%H_%M_%S_', time.localtime(time.time())))
+    file_name = "./records/%s_reward_pg.txt"%(time.strftime('%m_%d_%H_%M_%S', time.localtime(time.time())))
 
     cartpole = Cartpole_PG_Agent()
 
-
+    ###### TRAIN
     for episode in range(max_episodes):
         episode_data = cartpole.generate_episode()
 
@@ -206,4 +209,12 @@ if __name__ == '__main__':
         #print out episode info and update network
         cartpole.update_network(episode_data)
 
-
+    ###### TEST
+    res = []
+    for i in range(100):
+        episode_data = cartpole.generate_episode()
+        perf_str = "Test steps = {0}\n".format(episode_data.episode_rewards_sum)
+        log_perf(file_name,perf_str)
+        res.append(episode_data.episode_rewards_sum)
+    perf_str = "Mean steps = {0}\n".format(sum(res) / len(res))
+    log_perf(file_name,perf_str)
